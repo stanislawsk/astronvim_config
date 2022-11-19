@@ -71,17 +71,17 @@ local config = {
 
   -- Set dashboard header
   header = {
-    " █████  ███████ ████████ ██████   ██████",
-    "██   ██ ██         ██    ██   ██ ██    ██",
-    "███████ ███████    ██    ██████  ██    ██",
-    "██   ██      ██    ██    ██   ██ ██    ██",
-    "██   ██ ███████    ██    ██   ██  ██████",
-    " ",
-    "    ███    ██ ██    ██ ██ ███    ███",
-    "    ████   ██ ██    ██ ██ ████  ████",
-    "    ██ ██  ██ ██    ██ ██ ██ ████ ██",
-    "    ██  ██ ██  ██  ██  ██ ██  ██  ██",
-    "    ██   ████   ████   ██ ██      ██",
+        " ███████ ████████  █████  ███    ██ ██ ██ ██ ",
+        " ██         ██    ██   ██ ████   ██ ██ ████  ",
+        " ███████    ██    ███████ ██ ██  ██ ██ ███   ",
+        "      ██    ██    ██   ██ ██  ██ ██ ██ ████  ",
+        " ███████    ██    ██   ██ ██   ████ ██ ██ ██ ",
+        "                                             ",
+        "       ███    ██ ██    ██ ██ ███    ███      ",
+        "       ████   ██ ██    ██ ██ ████  ████      ",
+        "       ██ ██  ██ ██    ██ ██ ██ ████ ██      ",
+        "       ██  ██ ██  ██  ██  ██ ██  ██  ██      ",
+        "       ██   ████   ████   ██ ██      ██",
   },
 
   -- Default theme configuration
@@ -206,7 +206,7 @@ local config = {
       ["<leader>bj"] = { "<cmd>BufferLinePick<cr>", desc = "Pick to jump" },
       ["<leader>bt"] = { "<cmd>BufferLineSortByTabs<cr>", desc = "Sort by tabs" },
       -- quick save
-      -- ["<C-s>"] = { ":w!<cr>", desc = "Save File" },  -- change description but the same command
+      ["<C-s>"] = { ":w!<cr>", desc = "Save File" },  -- change description but the same command
     },
     t = {
       -- setting a mapping to false will disable it
@@ -238,6 +238,18 @@ local config = {
       --     require("lsp_signature").setup()
       --   end,
       -- },
+        -- {
+        --     'davidgranstrom/scnvim',
+        --     config = function()
+        --         require('scnvim').setup()
+        --     end
+        -- },
+        ['davidgranstrom/scnvim'] = {
+            config = function()
+                ensure_installed = true,
+                require('scnvim').setup()
+            end
+        },
     },
     -- All other entries override the require("<key>").setup({...}) call for default plugins
     ["null-ls"] = function(config) -- overrides `require("null-ls").setup(config)`
@@ -315,19 +327,43 @@ local config = {
   -- augroups/autocommands and custom filetypes also this just pure lua so
   -- anything that doesn't fit in the normal config locations above can go here
   polish = function()
-    -- Set up custom filetypes
-    -- vim.filetype.add {
-    --   extension = {
-    --     foo = "fooscript",
-    --   },
-    --   filename = {
-    --     ["Foofile"] = "fooscript",
-    --   },
-    --   pattern = {
-    --     ["~/%.config/foo/.*"] = "fooscript",
-    --   },
-    -- }
+    -- 
+    -- Super Collider setting:
+    --
+    local scnvim = require 'scnvim'
+    local map = scnvim.map
+    local map_expr = scnvim.map_expr
+    scnvim.setup {
+      keymaps = {
+        ['<M-e>'] = map('editor.send_line', {'i', 'n'}),
+        ['<C-e>'] = {
+          map('editor.send_block', {'i', 'n'}),
+          map('editor.send_selection', 'x'),
+        },
+        ['<CR>'] = map('postwin.toggle'),
+        ['<M-CR>'] = map('postwin.toggle', 'i'),
+        ['<M-L>'] = map('postwin.clear', {'n', 'i'}),
+        ['<C-k>'] = map('signature.show', {'n', 'i'}),
+        ['<F12>'] = map('sclang.hard_stop', {'n', 'x', 'i'}),
+        ['<leader>st'] = map('sclang.start'),
+        ['<leader>sk'] = map('sclang.recompile'),
+        ['<F1>'] = map_expr('s.boot'),
+        ['<F2>'] = map_expr('s.meter'),
+      },
+      editor = {
+        highlight = {
+          color = 'IncSearch',
+        },
+      },
+      postwin = {
+        float = {
+          enabled = true,
+        },
+      },
+    }
+
   end,
 }
+
 
 return config
