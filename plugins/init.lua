@@ -5,4 +5,5 @@ return {
           require('scnvim').setup()
     end
   },
+  { 'fedepujol/move.nvim' }
 }

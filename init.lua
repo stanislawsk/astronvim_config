@@ -207,6 +207,18 @@ local config = {
                         ["<leader>bt"] = { "<cmd>BufferLineSortByTabs<cr>", desc = "Sort by tabs" },
                         -- quick save
                         ["<C-s>"] = { ":w!<cr>", desc = "Save File" }, -- change description but the same command
+                        -- move.nvim
+                        ["<A-j>"] = { ":MoveLine(1)<CR>", desc = "Move line down" },
+                        ["<A-k>"] = { ":MoveLine(-1)<CR>", desc = "Move line up" },
+                        ["<A-h>"] = { ":MoveHChar(-1)<CR>", desc = "Moves the character under the cursor left" },
+                        ["<A-l>"] = { ":MoveHChar(1)<CR>", desc = "Moves the character under the cursor right" },
+                },
+                v = {
+                        -- move.nvim
+                        ["<A-j>"] = { ":MoveBlock(1)<CR>", desc = "Moves a selected block of text down" },
+                        ["<A-k>"] = { ":MoveBlock(-1)<CR>", desc = "Moves a selected block of text up" },
+                        ["<A-h>"] = { ":MoveHBlock(-1)<CR>", desc = "Moves a visual area left" },
+                        ["<A-l>"] = { ":MoveHBlock(1)<CR>", desc = "Moves a visual area right" },
                 },
                 t = {
                         -- setting a mapping to false will disable it
